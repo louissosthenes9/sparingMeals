@@ -28,6 +28,7 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @ElementCollection
     private List<RestaurantDTO> favourites = new ArrayList();
 
