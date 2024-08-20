@@ -31,7 +31,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         USER_ROLE role = user.getRole();
 
-        if(role == null){
+        if(role != null){
             role = USER_ROLE.ROLE_CUSTOMER;
         }
 
