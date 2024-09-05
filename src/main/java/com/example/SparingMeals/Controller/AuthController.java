@@ -7,13 +7,16 @@ import com.example.SparingMeals.Response.AuthResponse;
 import com.example.SparingMeals.Service.CustomUserDetailsService;
 import com.example.SparingMeals.model.Cart;
 import com.example.SparingMeals.model.User;
+import com.example.SparingMeals.request.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -73,6 +76,43 @@ public class AuthController {
           authResponse.setRole(savedUser.getRole());
 
          return  new ResponseEntity<>(authResponse, HttpStatus.CREATED);
+    }
+
+
+    public ResponseEntity<AuthResponse> signin(@RequestBody LoginRequest request){
+        String username = request.getEmail();
+        String password = request.getPassword();
+
+        Authentication authentication = authenticate(username,password);
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String jwt = jwtProvider.generateToken(authentication);
+
+        AuthResponse authResponse = new AuthResponse();
+
+        authResponse.setJwt(jwt);
+        authResponse.setMessage("Login successfull");
+
+
+        return new ResponseEntity<>(authResponse,HttpStatus.CREATED);
+    }
+
+    private Authentication authenticate(String username, String password) {
+        UserDetails userDetails = customUserDetailsService.loadUserByUsername(username);
+
+        if(userDetails == null){
+            throw new BadCredentialsException("Invalid user credentials");
+
+        }
+
+        if(!passwordEncoder.matches(password,userDetails.getPassword())){
+            throw new BadCredentialsException("Invalid password...");
+        }
+
+
+        return  new UsernamePasswordAuthenticationToken(userDetails,null,userDetails. getAuthorities());
+
     }
 
 }
