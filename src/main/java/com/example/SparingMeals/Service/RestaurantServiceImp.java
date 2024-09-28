@@ -155,7 +155,7 @@ public class RestaurantServiceImp implements RestaurantService{
 
         userRepository.save(user);
 
-        return null;
+        return dto;
     }
 
     @Override
@@ -166,7 +166,7 @@ public class RestaurantServiceImp implements RestaurantService{
             throw new Exception("restaurant not found");
         }
         restaurant.setOpen(!restaurant.isOpen());
-        
+
         return restaurantRepository.save(restaurant);
     }
 }
