@@ -30,9 +30,10 @@ public class User {
     @OneToMany(cascade = CascadeType.ALL,mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    @ElementCollection
-    private List<RestaurantDTO> favourites = new ArrayList();
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
+    private List<RestaurantDTO> favourites;
+
 
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> addresses =  new ArrayList<>();
