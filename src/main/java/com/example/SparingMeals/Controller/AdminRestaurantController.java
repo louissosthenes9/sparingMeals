@@ -1,5 +1,6 @@
 package com.example.SparingMeals.Controller;
 
+import com.example.SparingMeals.DTO.RestaurantDTO;
 import com.example.SparingMeals.Response.MessageResponse;
 import com.example.SparingMeals.Service.RestaurantService;
 import com.example.SparingMeals.Service.UserService;
@@ -83,6 +84,21 @@ public class AdminRestaurantController {
         User user = userService.findUserByJwtToken(jwt);
         Restaurant restaurant = restaurantService.getRestaurantByUserId(user.getId());
         return new ResponseEntity<>(restaurant,HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{id}/add-favourites")
+    public ResponseEntity<RestaurantDTO> addToFavourites(
+            @RequestHeader("Authorization") String jwt,
+            @PathVariable Long id
+    ) throws  Exception{
+        User user = userService.findUserByJwtToken(jwt);
+
+        RestaurantDTO restaurant = restaurantService.addToFavorites(id,user);
+
+
+        return new ResponseEntity<>(restaurant,HttpStatus.OK);
+
     }
 
 }
