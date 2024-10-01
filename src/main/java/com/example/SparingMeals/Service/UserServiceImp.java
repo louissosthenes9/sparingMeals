@@ -3,7 +3,6 @@ package com.example.SparingMeals.Service;
 import com.example.SparingMeals.Config.JwtProvider;
 import com.example.SparingMeals.Repository.UserRepository;
 import com.example.SparingMeals.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
