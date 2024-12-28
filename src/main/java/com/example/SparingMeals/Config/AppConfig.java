@@ -1,3 +1,4 @@
+
 package com.example.SparingMeals.Config;
 
 import java.util.Arrays;
@@ -11,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -27,10 +29,10 @@ public class AppConfig {
             .cors(cors->cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers("/api/admin/**").hasAnyRole("ADMIN","RESTAURANT_OWNER")
+                    .requestMatchers("/api/admin/**").hasAnyRole("ADMIN","RESTAURANT_OWNER")
                 .requestMatchers("/api/**").authenticated()
                 .anyRequest().permitAll()
-            ).addFilterBefore(new JWtTokenValidator(), BasicAuthenticationFilter.class);
+            ).addFilterBefore(new JWtTokenValidator(),UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

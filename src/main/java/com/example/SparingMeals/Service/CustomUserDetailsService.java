@@ -1,16 +1,18 @@
 package com.example.SparingMeals.Service;
 
-import com.example.SparingMeals.Repository.UserRepository;
-import com.example.SparingMeals.model.USER_ROLE;
-import com.example.SparingMeals.model.User;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
+
+import com.example.SparingMeals.Repository.UserRepository;
+import com.example.SparingMeals.model.USER_ROLE;
+import com.example.SparingMeals.model.User;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -31,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         USER_ROLE role = user.getRole();
 
-        if(role != null){
+        if(role == null){
             role = USER_ROLE.ROLE_CUSTOMER;
         }
 

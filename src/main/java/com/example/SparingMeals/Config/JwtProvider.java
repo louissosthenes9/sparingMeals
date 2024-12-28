@@ -1,17 +1,20 @@
 package com.example.SparingMeals.Config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKey;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
 
 @Service
 public class JwtProvider {
@@ -25,7 +28,10 @@ public class JwtProvider {
 
         return Jwts.builder()
                 .claim("email", auth.getName())
-                .claim("authorities", auth.getName())
+                .claim("authorities",auth.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","))
+        )
                 .issuedAt(new Date())
                 .expiration(new Date(System.currentTimeMillis() + JwtConstant.EXPIRATION_TIME)) // Sets token expiration
                 .signWith(key)
